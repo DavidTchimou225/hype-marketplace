@@ -5,7 +5,7 @@ export async function sendEmail(to: string, subject: string, html: string) {
   const port = Number(process.env.SMTP_PORT || 587);
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
-  const from = process.env.SMTP_FROM || 'no-reply@hype-market.com';
+  const from = process.env.FROM_EMAIL || process.env.SMTP_FROM || 'no-reply@hype-market.com';
 
   if (!host || !user || !pass) {
     console.warn('[mail] SMTP not configured. Email would be sent to:', to, subject);

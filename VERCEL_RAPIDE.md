@@ -24,11 +24,16 @@ Double-clic sur: commit-vercel.bat
 ### 5️⃣ Ajouter Variables (2 min)
 Settings → Environment Variables:
 ```
-BREVO_API_KEY = votre-cle
+SMTP_HOST = smtp.hostinger.com
+SMTP_PORT = 587
+SMTP_SECURE = false
+SMTP_USER = votre-email@domaine.com
+SMTP_PASS = votre-mot-de-passe-email
 FROM_EMAIL = noreply@domaine.com
 JWT_SECRET = secret-ultra-securise-123
 NEXT_PUBLIC_BASE_URL = https://hype-market.vercel.app
 ```
+*Voir VERCEL_SMTP_HOSTINGER.md pour détails*
 
 ### 6️⃣ Déployer (4 min - automatique)
 - Deployments → Deploy
