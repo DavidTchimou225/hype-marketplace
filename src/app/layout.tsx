@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '../styles/globals.css';
 import BottomNavigation from '@/components/BottomNavigation';
-import Footer from '@/components/Footer';
 import { AuthProvider } from '@/components/AuthProvider';
 import { CartProvider } from '@/components/CartProvider';
 import { OrganizationStructuredData, WebsiteStructuredData } from '@/components/StructuredData';
@@ -109,7 +108,6 @@ export default function RootLayout({
             <main className="flex-1">
               {children}
             </main>
-            <Footer />
             <BottomNavigation />
           </CartProvider>
         </AuthProvider>

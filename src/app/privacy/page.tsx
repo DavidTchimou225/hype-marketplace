@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Footer from '@/components/Footer';
 import BottomNavigation from '@/components/BottomNavigation';
 
 export default function PrivacyPage() {
@@ -74,7 +73,6 @@ export default function PrivacyPage() {
         </div>
       </div>
 
-      <Footer />
       <BottomNavigation />
     </div>
   );

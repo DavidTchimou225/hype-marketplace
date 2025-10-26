@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import BottomNavigation from '@/components/BottomNavigation';
 
 export default function VendeurPage() {
   const [email, setEmail] = useState('');
@@ -317,33 +318,7 @@ export default function VendeurPage() {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 lg:hidden">
-        <div className="flex justify-around items-center max-w-md mx-auto">
-          <Link href="/" className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">🏠</span>
-            <span className="text-xs text-gray-500">Accueil</span>
-          </Link>
-          <Link href="/boutiques" className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">🏪</span>
-            <span className="text-xs text-gray-500">Boutiques</span>
-          </Link>
-          <div className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">📹</span>
-            <span className="text-xs text-gray-500">Live</span>
-          </div>
-          <Link href="/categories" className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">📊</span>
-            <span className="text-xs text-gray-500">Catégories</span>
-          </Link>
-          <Link href="/profile" className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">👤</span>
-            <span className="text-xs text-gray-500">Profil</span>
-          </Link>
-        </div>
-      </div>
-
-      {/* Bottom padding for fixed navigation */}
-      <div className="h-20"></div>
+      <BottomNavigation />
     </div>
   );
 }
