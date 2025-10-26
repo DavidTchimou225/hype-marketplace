@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" fill="#FF1493"/>
+  <rect x="70" y="60" width="25" height="70" rx="5" fill="#FF69B4" stroke="#FFF" stroke-width="2"/>
+  <rect x="70" y="50" width="25" height="15" rx="3" fill="#FF1493" stroke="#FFF" stroke-width="2"/>
+  <rect x="105" y="70" width="25" height="60" rx="5" fill="#FF69B4" stroke="#FFF" stroke-width="2"/>
+  <ellipse cx="117.5" cy="67" rx="12.5" ry="5" fill="#FF1493" stroke="#FFF" stroke-width="2"/>
+  <text x="100" y="180" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#FFF">COSMÉTIQUES</text>
+</svg>

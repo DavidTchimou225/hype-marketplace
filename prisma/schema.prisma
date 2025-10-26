@@ -1,0 +1,375 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  phone     String?  @unique
+  firstName String
+  lastName  String
+  password  String
+  isVerified Boolean  @default(false)
+  role      UserRole @default(USER)
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  addresses Address[]
+  orders    Order[]
+  reviews   Review[]
+  cart      CartItem[]
+  favorites Favorite[]
+
+  @@map("users")
+}
+
+model Store {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  avatar      String?
+  isLive      Boolean  @default(false)
+  rating      Float    @default(0.0)
+  totalSales  Int      @default(0)
+  satisfaction Int     @default(0)
+  
+  // Authentification boutique
+  email       String   @unique
+  password    String
+  phone       String?
+  address     String?
+  city        String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  products Product[]
+  orders   OrderItem[]
+  liveSessions LiveSession[]
+
+  @@map("stores")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  price       Int      // Prix en FCFA (centimes)
+  images      String   // URLs des images séparées par des virgules
+  colors      String   // Couleurs disponibles séparées par des virgules
+  sizes       String   // Tailles disponibles séparées par des virgules
+  stock       Int      @default(0)
+  rating      Float    @default(0.0)
+  reviewCount Int      @default(0)
+  isActive    Boolean  @default(true)
+  
+  // Métriques d'engagement pour algorithme intelligent
+  viewCount   Int      @default(0)
+  cartAddCount Int     @default(0)
+  purchaseCount Int    @default(0)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Foreign Keys
+  storeId    String
+
+  // Relations
+  store     Store        @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  categories Category[]
+  reviews   Review[]
+  cartItems CartItem[]
+  favorites Favorite[]
+  orderItems OrderItem[]
+
+  @@map("products")
+}
+
+model Address {
+  id         String   @id @default(cuid())
+  firstName  String
+  lastName   String
+  phone      String
+  address    String
+  city       String
+  postalCode String?
+  country    String   @default("Côte d'Ivoire")
+  isDefault  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Foreign Keys
+  userId String
+
+  // Relations
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
+
+  @@map("addresses")
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  orderNumber   String      @unique
+  status        OrderStatus @default(PENDING)
+  totalAmount   Int         // Montant total en FCFA (centimes)
+  shippingCost  Int         @default(0)
+  paymentMethod String?
+  paymentStatus PaymentStatus @default(PENDING)
+  notes         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Foreign Keys
+  userId      String
+  addressId   String
+
+  // Relations
+  user        User        @relation(fields: [userId], references: [id])
+  address     Address     @relation(fields: [addressId], references: [id])
+  items       OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id       String @id @default(cuid())
+  quantity Int
+  price    Int    // Prix unitaire au moment de la commande
+  color    String?
+  size     String?
+
+  // Foreign Keys
+  orderId   String
+  productId String
+  storeId   String
+
+  // Relations
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+  store   Store   @relation(fields: [storeId], references: [id])
+
+  @@map("order_items")
+}
+
+model CartItem {
+  id       String @id @default(cuid())
+  quantity Int
+  color    String?
+  size     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Foreign Keys
+  userId    String
+  productId String
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId, color, size])
+  @@map("cart_items")
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  // Foreign Keys
+  userId    String
+  productId String
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("favorites")
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int      // 1-5 étoiles
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Foreign Keys
+  userId    String
+  productId String
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("reviews")
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+model StoreApplication {
+  id                    String   @id @default(cuid())
+  
+  // Informations du propriétaire
+  ownerFirstName        String
+  ownerLastName         String
+  ownerEmail            String
+  ownerPhone            String
+  ownerAddress          String
+  ownerCity             String
+  ownerIdNumber         String
+  ownerIdType           String
+  
+  // Informations de la boutique
+  storeName             String
+  storeDescription      String
+  storeAddress          String
+  storeCity             String
+  storePhone            String
+  storeEmail            String
+  businessType          String
+  
+  // Catégories de produits
+  productCategories     String   // JSON array
+  
+  // Informations légales
+  hasBusinessLicense    Boolean  @default(false)
+  businessLicenseNumber String?
+  taxNumber             String?
+  
+  // Authentification boutique: hash du mot de passe saisi à l'inscription
+  passwordHash          String?
+  
+  // Statut et dates
+  status                ApplicationStatus @default(PENDING)
+  submittedAt           DateTime @default(now())
+  reviewedAt            DateTime?
+  reviewedBy            String?
+  rejectionReason       String?
+  
+  // Relation vers la boutique créée (si approuvée)
+  createdStoreId        String?
+  
+  @@map("store_applications")
+}
+
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// Live streaming sessions for stores
+model LiveSession {
+  id         String   @id @default(cuid())
+  title      String
+  streamUrl  String   // HLS (.m3u8) or YouTube embed URL
+  thumbnail  String?
+  isLive     Boolean  @default(true)
+  viewers    Int      @default(0)
+  startedAt  DateTime @default(now())
+  endedAt    DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // FK
+  storeId String
+  store   Store   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([storeId, isLive])
+  @@map("live_sessions")
+}
+
+// One-time codes for email verification and password resets
+enum OtpType {
+  REGISTER
+  RESET_PASSWORD
+}
+
+model OtpToken {
+  id         String   @id @default(cuid())
+  email      String
+  code       String
+  type       OtpType
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime @default(now())
+
+  @@index([email, type])
+  @@map("otp_tokens")
+}
+
+model Banner {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  image       String
+  link        String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("banners")
+}
+
+model Settings {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}

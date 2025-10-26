@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" fill="#DDA0DD"/>
+  <path d="M80 60 L120 60 L130 70 L130 120 L125 130 L75 130 L70 120 L70 70 Z" fill="#DA70D6" stroke="#FFF" stroke-width="2"/>
+  <path d="M85 60 L85 50 L115 50 L115 60" fill="#DA70D6" stroke="#FFF" stroke-width="2"/>
+  <rect x="75" y="70" width="50" height="5" fill="#FFF" opacity="0.5"/>
+  <text x="100" y="180" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#FFF">ACCESSOIRES</text>
+</svg>

@@ -1,0 +1,28 @@
+# Hype Market - Robots.txt
+# https://hypemarket.ci/robots.txt
+
+User-agent: *
+Allow: /
+Allow: /product/
+Allow: /category/
+Allow: /store/
+Allow: /boutiques
+Allow: /categories
+Allow: /search
+
+# Pages à ne pas indexer
+Disallow: /api/
+Disallow: /admin/
+Disallow: /boutique/
+Disallow: /cart
+Disallow: /checkout
+Disallow: /profile
+Disallow: /auth/
+Disallow: /login
+Disallow: /register
+
+# Sitemap
+Sitemap: https://hypemarket.ci/sitemap.xml
+
+# Crawl delay (facultatif)
+Crawl-delay: 10

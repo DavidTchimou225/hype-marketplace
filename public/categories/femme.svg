@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <rect width="200" height="200" fill="#FFB6C1"/>
+  <path d="M100 50 L120 80 L140 80 L140 120 L120 120 L120 150 L80 150 L80 120 L60 120 L60 80 L80 80 Z" fill="#FF69B4" stroke="#FFF" stroke-width="2"/>
+  <circle cx="100" cy="35" r="15" fill="#FF69B4" stroke="#FFF" stroke-width="2"/>
+  <text x="100" y="180" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#FFF">MODE FEMME</text>
+</svg>
