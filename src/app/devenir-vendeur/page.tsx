@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Footer from '@/components/Footer';
 
 export default function DevenirVendeurPage() {
   return (
@@ -180,7 +179,6 @@ export default function DevenirVendeurPage() {
         </div>
       </div>
 
-      <Footer />
     </div>
   );
 }

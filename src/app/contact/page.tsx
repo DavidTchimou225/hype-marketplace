@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Footer from '@/components/Footer';
 import BottomNavigation from '@/components/BottomNavigation';
 
 export default function ContactPage() {
@@ -133,7 +132,6 @@ export default function ContactPage() {
         </div>
       </div>
 
-      <Footer />
       <BottomNavigation />
     </div>
   );

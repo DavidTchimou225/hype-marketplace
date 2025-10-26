@@ -61,7 +61,8 @@ export default function RegisterPage() {
           lastName: formData.lastName,
           phone: formData.phone,
           email: formData.email,
-          password: formData.password
+          password: formData.password,
+          acceptedTerms: acceptedTerms
         }),
       });
 

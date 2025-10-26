@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Footer from '@/components/Footer';
 import BottomNavigation from '@/components/BottomNavigation';
 
 export default function AboutPage() {
@@ -73,7 +72,6 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <Footer />
       <BottomNavigation />
     </div>
   );

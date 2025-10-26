@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Footer from '@/components/Footer';
 import BottomNavigation from '@/components/BottomNavigation';
 
 export default function TermsPage() {
@@ -485,7 +484,6 @@ export default function TermsPage() {
         </div>
       </div>
 
-      <Footer />
       <BottomNavigation />
     </div>
   );

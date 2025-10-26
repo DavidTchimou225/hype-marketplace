@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import BottomNavigation from '@/components/BottomNavigation';
 
 // Données des catégories
 const categories = {
@@ -236,33 +237,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 lg:hidden">
-        <div className="flex justify-around items-center max-w-md mx-auto">
-          <div className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">🏠</span>
-            <span className="text-xs text-gray-500">Accueil</span>
-          </div>
-          <div className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">🏪</span>
-            <span className="text-xs text-gray-500">Boutiques</span>
-          </div>
-          <div className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">📹</span>
-            <span className="text-xs text-gray-500">Live</span>
-          </div>
-          <div className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">📊</span>
-            <span className="text-xs text-gray-900 font-medium">Catégories</span>
-          </div>
-          <div className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">👤</span>
-            <span className="text-xs text-gray-500">Profil</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom padding for fixed navigation */}
-      <div className="h-20"></div>
+      <BottomNavigation />
     </div>
   );
 }

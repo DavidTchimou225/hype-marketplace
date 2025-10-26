@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import BottomNavigation from '@/components/BottomNavigation';
 
 interface Category {
   id: string;
@@ -106,30 +107,7 @@ export default function CategoriesPage() {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2">
-        <div className="flex justify-around items-center">
-          <Link href="/" className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">🏠</span>
-            <span className="text-xs text-gray-500">Accueil</span>
-          </Link>
-          <Link href="/boutiques" className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">🏪</span>
-            <span className="text-xs text-gray-500">Boutiques</span>
-          </Link>
-          <Link href="/live" className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">📹</span>
-            <span className="text-xs text-gray-500">Live</span>
-          </Link>
-          <div className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">📱</span>
-            <span className="text-xs text-gray-900 font-medium">Catégories</span>
-          </div>
-          <Link href="/profil" className="flex flex-col items-center py-2">
-            <span className="text-xl mb-1">👤</span>
-            <span className="text-xs text-gray-500">Profil</span>
-          </Link>
-        </div>
-      </div>
+      <BottomNavigation />
     </div>
   );
 }
