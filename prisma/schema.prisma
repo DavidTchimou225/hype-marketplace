@@ -109,6 +109,7 @@ model Product {
   cartItems CartItem[]
   favorites Favorite[]
   orderItems OrderItem[]
+  trendingProduct TrendingProduct?
 
   @@map("products")
 }
@@ -372,4 +373,21 @@ model Settings {
   updatedAt DateTime @updatedAt
 
   @@map("settings")
+}
+
+// Table pour gérer les produits en tendance (manuel ou automatique)
+model TrendingProduct {
+  id        String   @id @default(cuid())
+  productId String
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId])
+  @@index([isActive, order])
+  @@map("trending_products")
 }
