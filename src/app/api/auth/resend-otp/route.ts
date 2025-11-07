@@ -71,17 +71,15 @@ export async function POST(request: NextRequest) {
       console.error('Erreur lors de l\'envoi de l\'email OTP:', emailError)
     }
 
-    // En développement, inclure le code OTP dans la réponse
     const response: any = {
       success: true,
-      message: emailSent 
-        ? 'Un nouveau code de vérification a été envoyé à votre email.'
-        : 'Code généré. Vérifiez la console pour le code OTP.',
+      message: 'Un nouveau code de vérification a été envoyé à votre email.',
     }
 
+    // Afficher le code UNIQUEMENT en développement
     if (process.env.NODE_ENV === 'development') {
       response.debug = { otpCode: code }
-      console.log('🔑 NOUVEAU CODE OTP:', code)
+      console.log('🔑 NOUVEAU CODE OTP (DEV ONLY):', code)
     }
 
     return NextResponse.json(response)

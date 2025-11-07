@@ -106,26 +106,18 @@ export async function POST(request: Request) {
       sendOTPEmail(email, otpCode, type)
     ]);
 
-    if (!smsSuccess && !emailSuccess) {
-      return NextResponse.json(
-        { error: 'Erreur lors de l\'envoi de l\'OTP' },
-        { status: 500 }
-      );
+    const response: any = {
+      success: true,
+      message: 'Code OTP envoyé par Email'
     }
 
-    // En développement, retourner le code (à supprimer en production)
+    // Afficher le code UNIQUEMENT en développement
     if (process.env.NODE_ENV === 'development') {
-      return NextResponse.json({ 
-        success: true, 
-        message: 'OTP envoyé',
-        debug: { code: otpCode } // DEBUG: à supprimer en production
-      });
+      response.debug = { code: otpCode }
+      console.log('🔑 CODE OTP BOUTIQUE (DEV ONLY):', otpCode)
     }
 
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Code OTP envoyé par SMS et Email' 
-    });
+    return NextResponse.json(response);
 
   } catch (error) {
     console.error('Erreur send-otp:', error);
