@@ -93,13 +93,22 @@ export async function POST(request: NextRequest) {
       // On continue quand même, l'utilisateur peut réessayer plus tard
     }
     
-    return NextResponse.json({
+    // En développement, inclure le code OTP dans la réponse
+    const response: any = {
       success: true,
       message: emailSent 
         ? 'Inscription réussie. Un code de vérification a été envoyé à votre email.'
-        : 'Inscription réussie. Vous pouvez maintenant vous connecter.',
+        : 'Inscription réussie. Vérifiez la console pour le code OTP.',
       user: newUser
-    })
+    }
+
+    // Afficher le code en développement
+    if (process.env.NODE_ENV === 'development') {
+      response.debug = { otpCode: code }
+      console.log('🔑 CODE OTP:', code)
+    }
+
+    return NextResponse.json(response)
 
   } catch (error: any) {
     console.error('Erreur lors de l\'inscription:', error)

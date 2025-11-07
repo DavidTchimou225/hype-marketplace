@@ -68,7 +68,14 @@ export default function RegisterPage() {
 
       if (response.ok) {
         const data = await response.json();
-        alert(data.message || 'Inscription réussie. Vérifiez votre email.');
+        
+        // En développement, afficher le code OTP
+        if (data.debug?.otpCode) {
+          alert(`${data.message}\n\n🔑 CODE OTP (dev): ${data.debug.otpCode}`);
+        } else {
+          alert(data.message || 'Inscription réussie. Vérifiez votre email.');
+        }
+        
         const email = encodeURIComponent(formData.email);
         router.push(`/verify-email?email=${email}`);
       } else {

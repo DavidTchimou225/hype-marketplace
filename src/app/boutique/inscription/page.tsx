@@ -118,6 +118,13 @@ export default function BoutiqueInscriptionPage() {
 
       if (response.ok) {
         setOtpSent(true);
+        
+        // En développement, afficher le code OTP
+        if (data.debug?.code) {
+          alert(`OTP envoyé !\n\n🔑 CODE OTP (dev): ${data.debug.code}`);
+        } else {
+          alert('Code OTP envoyé par SMS et Email');
+        }
       } else {
         throw new Error(data.error || 'Erreur lors de l\'envoi de l\'OTP');
       }
