@@ -83,20 +83,38 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Envoyer l'email OTP
-    await sendEmail(newUser.email, 'Hype Market • Vérifiez votre email', otpEmailTemplate(code, 'REGISTER'))
+    // Envoyer l'email OTP (ne pas bloquer si l'email échoue)
+    let emailSent = false
+    try {
+      await sendEmail(newUser.email, 'Hype Market • Vérifiez votre email', otpEmailTemplate(code, 'REGISTER'))
+      emailSent = true
+    } catch (emailError) {
+      console.error('Erreur lors de l\'envoi de l\'email OTP:', emailError)
+      // On continue quand même, l'utilisateur peut réessayer plus tard
+    }
     
     return NextResponse.json({
       success: true,
-      message: 'Inscription réussie. Un code de vérification a été envoyé à votre email.',
+      message: emailSent 
+        ? 'Inscription réussie. Un code de vérification a été envoyé à votre email.'
+        : 'Inscription réussie. Vous pouvez maintenant vous connecter.',
       user: newUser
     })
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Erreur lors de l\'inscription:', error)
     
+    // Message d'erreur plus détaillé pour le debugging
+    let errorMessage = 'Erreur serveur lors de l\'inscription'
+    
+    if (error.code === 'P2002') {
+      errorMessage = 'Un compte existe déjà avec cet email ou ce numéro de téléphone'
+    } else if (error.message) {
+      console.error('Détails:', error.message)
+    }
+    
     return NextResponse.json(
-      { error: 'Erreur serveur lors de l\'inscription' },
+      { error: errorMessage },
       { status: 500 }
     )
   }
