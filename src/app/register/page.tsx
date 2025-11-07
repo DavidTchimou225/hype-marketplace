@@ -254,24 +254,6 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          {/* Séparateur */}
-          <div className="text-center text-gray-400 text-sm my-6">
-            Ou continuer avec
-          </div>
-
-          {/* Boutons de connexion sociale */}
-          <div className="space-y-3">
-            <button className="w-full flex items-center justify-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-              <span className="text-lg">🔍</span>
-              <span className="font-medium text-gray-700">Google</span>
-            </button>
-            
-            <button className="w-full flex items-center justify-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-              <span className="text-lg">📘</span>
-              <span className="font-medium text-gray-700">Facebook</span>
-            </button>
-          </div>
-
           {/* Lien de connexion */}
           <div className="text-center mt-6">
             <p className="text-gray-600 text-sm">

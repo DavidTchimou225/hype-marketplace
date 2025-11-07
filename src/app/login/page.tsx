@@ -114,24 +114,6 @@ export default function LoginPage() {
             </Link>
           </div>
 
-          {/* Séparateur */}
-          <div className="text-center text-gray-400 text-sm my-6">
-            Ou continuer avec
-          </div>
-
-          {/* Boutons de connexion sociale */}
-          <div className="space-y-3">
-            <button className="w-full flex items-center justify-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-              <span className="text-lg">🔍</span>
-              <span className="font-medium text-gray-700">Google</span>
-            </button>
-            
-            <button className="w-full flex items-center justify-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-              <span className="text-lg">📘</span>
-              <span className="font-medium text-gray-700">Facebook</span>
-            </button>
-          </div>
-
           {/* Connexion boutique */}
           <div className="text-center mt-6 p-4 bg-blue-50 rounded-lg">
             <p className="text-blue-700 text-sm font-medium mb-2">
