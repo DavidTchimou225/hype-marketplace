@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
-import { existsSync } from 'fs';
+import { uploadImageToCloudinary } from '@/lib/cloudinary';
 
 // Configuration pour permettre les uploads
 export const dynamic = 'force-dynamic';
@@ -44,56 +42,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Générer un nom de fichier unique
-    const timestamp = Date.now();
-    const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const fileName = `banner-${timestamp}-${originalName}`;
-
-    console.log('Nom du fichier:', fileName);
-
-    // Créer le dossier si nécessaire avec permissions complètes
-    const uploadDir = path.join(process.cwd(), 'public', 'banners');
-    console.log('Dossier upload:', uploadDir);
-    
-    try {
-      if (!existsSync(uploadDir)) {
-        console.log('Création du dossier...');
-        await mkdir(uploadDir, { recursive: true, mode: 0o777 });
-        console.log('Dossier créé avec permissions complètes');
-      }
-    } catch (mkdirError: any) {
-      console.error('Erreur création dossier:', mkdirError);
-      return NextResponse.json(
-        { error: `Impossible de créer le dossier: ${mkdirError.message}` },
-        { status: 500 }
-      );
-    }
-
-    // Convertir le fichier en buffer et sauvegarder
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const filePath = path.join(uploadDir, fileName);
-    
-    console.log('Sauvegarde du fichier:', filePath);
-    try {
-      await writeFile(filePath, buffer, { mode: 0o666 });
-      console.log('Fichier sauvegardé avec succès');
-    } catch (writeError: any) {
-      console.error('Erreur écriture fichier:', writeError);
-      return NextResponse.json(
-        { error: `Impossible de sauvegarder le fichier: ${writeError.message}` },
-        { status: 500 }
-      );
-    }
-
-    // Retourner le chemin public
-    const publicPath = `/banners/${fileName}`;
-
+    // Upload sur Cloudinary
+    const result = await uploadImageToCloudinary(file);
+    // result.url contient l'URL de l'image hébergée
     return NextResponse.json({
       success: true,
-      path: publicPath,
-      url: publicPath,
-      fileName: fileName
+      path: result.url,
+      url: result.url,
+      fileName: result.public_id
     });
 
   } catch (error: any) {

@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/middleware/adminAuth';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
-import { existsSync } from 'fs';
+import { uploadImageToCloudinary } from '@/lib/cloudinary';
 
 export async function POST(request: NextRequest) {
   try {
@@ -45,32 +43,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Générer un nom de fichier unique
-    const timestamp = Date.now();
-    const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const fileName = `banner-${timestamp}-${originalName}`;
-
-    // Créer le dossier si nécessaire
-    const uploadDir = path.join(process.cwd(), 'public', 'banners');
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
-    }
-
-    // Convertir le fichier en buffer et sauvegarder
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const filePath = path.join(uploadDir, fileName);
-    
-    await writeFile(filePath, buffer);
-
-    // Retourner le chemin public
-    const publicPath = `/banners/${fileName}`;
-
+    // Upload sur Cloudinary
+    const result = await uploadImageToCloudinary(file);
+    // result.url contient l'URL de l'image hébergée
     return NextResponse.json({
       success: true,
-      path: publicPath,
-      url: publicPath,
-      fileName: fileName
+      path: result.url,
+      url: result.url,
+      fileName: result.public_id
     });
 
   } catch (error: any) {
