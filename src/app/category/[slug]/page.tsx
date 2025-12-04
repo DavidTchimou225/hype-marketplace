@@ -5,49 +5,28 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import BottomNavigation from '@/components/BottomNavigation';
 
-// Données des catégories
-const categories = {
-  'femme': {
-    name: 'Mode Femme',
-    icon: '👗',
-    slug: 'femme'
-  },
-  'homme': {
-    name: 'Mode Homme',
-    icon: '👔',
-    slug: 'homme'
-  },
-  'accessoires': {
-    name: 'Accessoires',
-    icon: '👜',
-    slug: 'accessoires'
-  },
-  'bijoux': {
-    name: 'Bijoux',
-    icon: '💎',
-    slug: 'bijoux'
-  },
-  'cosmetiques': {
-    name: 'Cosmétiques',
-    icon: '💄',
-    slug: 'cosmetiques'
-  },
-  'baskets': {
-    name: 'Baskets',
-    icon: '👟',
-    slug: 'baskets'
-  },
-  'skincare': {
-    name: 'Skincare',
-    icon: '🧴',
-    slug: 'skincare'
-  }
-};
-
 export default function CategoryPage({ params }: { params: { slug: string } }) {
-  const category = categories[params.slug as keyof typeof categories];
-  
-  if (!category) {
+  const [category, setCategory] = useState<any | null>(null);
+  const [catLoading, setCatLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      setCatLoading(true);
+      try {
+        const res = await fetch(`/api/categories?limit=1000`);
+        const data = await res.json();
+        const found = data.categories?.find((c: any) => c.slug === params.slug);
+        setCategory(found || null);
+      } catch (e) {
+        setCategory(null);
+      } finally {
+        setCatLoading(false);
+      }
+    };
+    fetchCategory();
+  }, [params.slug]);
+
+  if (!catLoading && !category) {
     notFound();
   }
 
@@ -123,7 +102,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
         <Link href="/" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
           <span className="text-xl">←</span>
         </Link>
-        <h2 className="text-lg font-semibold text-gray-900">{category.name}</h2>
+        <h2 className="text-lg font-semibold text-gray-900">{category?.name || params.slug}</h2>
         <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
           <span className="text-xl">🔍</span>
         </button>
