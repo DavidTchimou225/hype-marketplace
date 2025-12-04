@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Upload sur Cloudinary
-    const result = await uploadImageToCloudinary(file);
+    const result = await uploadImageToCloudinary(file) as any;
     // result.url contient l'URL de l'image hébergée
     return NextResponse.json({
       success: true,
