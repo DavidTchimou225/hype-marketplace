@@ -63,7 +63,7 @@ export default function Home() {
 
       {/* Top Navigation */}
       <div className="bg-white px-4 py-3 flex justify-between items-center border-b">
-        <h1 className="text-xl font-bold text-gray-900">Hype Market</h1>
+        <img src="/logo.png" alt="Hype Market" className="h-8 w-auto" />
         <div className="flex items-center gap-3">
           {!isAuthenticated && (
             <Link 
