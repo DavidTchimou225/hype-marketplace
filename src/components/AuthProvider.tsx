@@ -15,7 +15,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
-  login: (emailOrPhone: string, password: string) => Promise<boolean>;
+  login: (emailOrPhone: string, password: string) => Promise<{ success: boolean; error?: string; needsVerification?: boolean; email?: string }>;
   logout: () => void;
 }
 
@@ -56,13 +56,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (typeof window !== 'undefined') {
           localStorage.setItem('hype-market-user', JSON.stringify(result.user));
         }
-        return true;
+        return { success: true };
       }
       
-      return false;
+      // Gérer le cas des comptes non vérifiés
+      if (result.needsVerification) {
+        return { 
+          success: false, 
+          needsVerification: true, 
+          email: result.email,
+          error: result.error 
+        };
+      }
+      
+      return { success: false, error: result.error || 'Erreur de connexion' };
     } catch (error) {
       console.error('Erreur de connexion:', error);
-      return false;
+      return { success: false, error: 'Erreur serveur' };
     }
   };
 

@@ -27,12 +27,17 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const success = await login(formData.emailOrPhone, formData.password);
+      const result = await login(formData.emailOrPhone, formData.password);
       
-      if (success) {
+      if (result.success) {
         router.push('/');
+      } else if (result.needsVerification && result.email) {
+        // Compte non vérifié, rediriger vers la vérification
+        alert(result.error || 'Votre compte n\'est pas vérifié. Vous allez être redirigé vers la page de vérification.');
+        const email = encodeURIComponent(result.email);
+        router.push(`/verify-email?email=${email}`);
       } else {
-        alert('Email/téléphone ou mot de passe incorrect');
+        alert(result.error || 'Email/téléphone ou mot de passe incorrect');
       }
     } catch (error) {
       console.error('Erreur de connexion:', error);

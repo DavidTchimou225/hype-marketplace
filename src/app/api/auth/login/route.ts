@@ -32,25 +32,28 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Vérifier si le compte est vérifié AVANT de vérifier le mot de passe
+    if (!user.isVerified) {
+      console.log(`⚠️ Tentative de connexion avec compte non vérifié: ${user.email}`)
+      return NextResponse.json(
+        { 
+          error: 'Votre compte n\'est pas encore vérifié. Veuillez vérifier votre email avec le code OTP reçu lors de l\'inscription.',
+          needsVerification: true,
+          email: user.email
+        },
+        { status: 403 }
+      )
+    }
+
     // Vérifier le mot de passe avec bcrypt
     const passwordMatch = await bcrypt.compare(password, user.password)
+    
+    console.log(`🔐 Tentative de connexion: ${user.email}, Match: ${passwordMatch}`)
     
     if (!passwordMatch) {
       return NextResponse.json(
         { error: 'Email/téléphone ou mot de passe incorrect' },
         { status: 401 }
-      )
-    }
-
-    // Vérifier si le compte est vérifié
-    if (!user.isVerified) {
-      return NextResponse.json(
-        { 
-          error: 'Votre compte n\'est pas vérifié. Veuillez vérifier votre email avec le code OTP.',
-          needsVerification: true,
-          email: user.email
-        },
-        { status: 403 }
       )
     }
 
