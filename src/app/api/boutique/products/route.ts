@@ -74,27 +74,25 @@ export async function POST(request: NextRequest) {
       else if (singleId) categoryIds = [String(singleId)];
 
       // handle files: accept 'image' or 'images'
-      const uploadedPaths: string[] = [];
+      const uploadedUrls: string[] = [];
       const maybeFiles: any[] = [];
       const single = form.get('image');
       if (single) maybeFiles.push(single);
       const multi = form.getAll('images');
       if (multi && multi.length) maybeFiles.push(...multi);
 
-      const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'products');
-      await mkdir(uploadDir, { recursive: true });
       for (const f of maybeFiles) {
         if (typeof f === 'object' && 'arrayBuffer' in f) {
           const file = f as File;
-          const arrayBuffer = await file.arrayBuffer();
-          const buffer = Buffer.from(arrayBuffer);
-          const safeName = `${Date.now()}-${(file.name || 'image').replace(/[^a-zA-Z0-9_.-]/g, '_')}`;
-          const fullPath = path.join(uploadDir, safeName);
-          await writeFile(fullPath, buffer);
-          uploadedPaths.push(`/uploads/products/${safeName}`);
+          // Upload to Cloudinary
+          // @ts-ignore
+          const result: any = await (await import('@/lib/cloudinary')).uploadImageToCloudinary(file);
+          if (result && result.secure_url) {
+            uploadedUrls.push(result.secure_url);
+          }
         }
       }
-      images = uploadedPaths.join(',');
+      images = uploadedUrls.join(',');
     } else {
       // JSON fallback
       const body = await request.json();
