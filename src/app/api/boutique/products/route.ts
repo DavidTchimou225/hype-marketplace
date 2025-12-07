@@ -137,6 +137,7 @@ export async function POST(request: NextRequest) {
       .replace(/-+/g, '-')
       .trim();
 
+    console.error('API DEBUG: avant création produit');
     const product = await prisma.product.create({
       data: {
         name,
@@ -155,20 +156,25 @@ export async function POST(request: NextRequest) {
         store: true,
       }
     });
+    console.error('API DEBUG: produit créé', product.id);
 
     // Connect categories in a separate update to avoid type diffs across client versions
+    console.error('API DEBUG: avant update catégories', product.id, categoryIds);
     await prisma.product.update({
       where: { id: product.id },
       data: { categories: { set: [], connect: categoryIds.map((id) => ({ id })) } }
     });
+    console.error('API DEBUG: update catégories OK');
 
     return NextResponse.json({ product });
 
   } catch (error) {
     console.error('Erreur lors de la création du produit:', error);
     const err = error as Error;
+    // Log message d'erreur explicite
+    console.error('API DEBUG: erreur finale', err.message, err.stack);
     return NextResponse.json(
-      { error: err.stack || err.message || String(error) || 'Erreur lors de la création du produit' },
+      { error: err.message || String(error) || 'Erreur lors de la création du produit' },
       { status: 500 }
     );
   }
