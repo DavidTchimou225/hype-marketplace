@@ -1,13 +1,11 @@
 {
   "/page": "app/page.js",
-  "/categories/page": "app/categories/page.js",
-  "/store/[slug]/page": "app/store/[slug]/page.js",
-  "/product/[slug]/page": "app/product/[slug]/page.js",
-  "/icon/[[...__metadata_id__]]/route": "app/icon/[[...__metadata_id__]]/route.js",
+  "/api/stores/route": "app/api/stores/route.js",
   "/api/banners/route": "app/api/banners/route.js",
   "/api/trending/route": "app/api/trending/route.js",
-  "/api/stores/route": "app/api/stores/route.js",
-  "/api/categories/route": "app/api/categories/route.js",
   "/api/settings/route": "app/api/settings/route.js",
-  "/admin/banners/page": "app/admin/banners/page.js"
+  "/api/categories/route": "app/api/categories/route.js",
+  "/categories/page": "app/categories/page.js",
+  "/boutiques/page": "app/boutiques/page.js",
+  "/devenir-vendeur/page": "app/devenir-vendeur/page.js"
 }

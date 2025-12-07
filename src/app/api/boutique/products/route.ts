@@ -166,8 +166,9 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Erreur lors de la création du produit:', error);
+    const err = error as Error;
     return NextResponse.json(
-      { error: 'Erreur lors de la création du produit' },
+      { error: err.stack || err.message || String(error) || 'Erreur lors de la création du produit' },
       { status: 500 }
     );
   }

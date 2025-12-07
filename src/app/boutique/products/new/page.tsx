@@ -108,8 +108,25 @@ export default function NewProductPage() {
       if (response.ok) {
         router.push('/boutique/dashboard');
       } else {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data?.error || 'Erreur lors de la création');
+        let data: any = {};
+        try {
+          data = await response.json();
+        } catch {}
+        if (data?.error) {
+          // Affichage multi-erreurs si séparées par ·
+          if (typeof data.error === 'string' && data.error.includes('·')) {
+            const errArr = data.error.split('·').map((e: string) => e.trim()).filter(Boolean);
+            const errObj: Record<string, string> = {};
+            errArr.forEach((msg: string, idx: number) => {
+              errObj[`api_${idx}`] = msg;
+            });
+            setErrors(errObj);
+            return;
+          }
+          setErrors({ submit: data.error });
+          return;
+        }
+        setErrors({ submit: 'Erreur lors de la création du produit' });
       }
     } catch (error: any) {
       console.error('Erreur lors de la création:', error);
