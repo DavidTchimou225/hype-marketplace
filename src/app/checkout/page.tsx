@@ -178,7 +178,7 @@ export default function CheckoutPage() {
   const totalWithShipping = total + shippingFee;
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-32">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white px-4 py-3 flex items-center border-b sticky top-0 z-10">
         <Link href="/cart" className="mr-4">
@@ -335,23 +335,21 @@ export default function CheckoutPage() {
         </form>
       </div>
 
-      {/* Bouton fixe en bas */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4 z-20">
-        <div className="max-w-md mx-auto">
-          <button
-            type="button"
-            onClick={handleSubmit}
-            disabled={loading || !formData.address}
-            className="w-full bg-black text-white py-4 rounded-xl font-bold text-lg hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed shadow-md"
-          >
-            {loading ? 'Traitement en cours...' : `Valider et payer • ${formatPrice(totalWithShipping)}`}
-          </button>
-          {!formData.address && (
-            <p className="text-xs text-red-500 text-center mt-2">
-              Veuillez sélectionner une adresse de livraison
-            </p>
-          )}
-        </div>
+      {/* Bouton de validation */}
+      <div className="mt-6 mb-8">
+        <button
+          type="button"
+          onClick={handleSubmit}
+          disabled={loading || !formData.address}
+          className="w-full bg-black text-white py-4 rounded-xl font-bold text-lg hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          {loading ? 'Traitement en cours...' : `Valider et payer • ${formatPrice(totalWithShipping)}`}
+        </button>
+        {!formData.address && (
+          <p className="text-xs text-red-500 text-center mt-2">
+            Veuillez sélectionner une adresse de livraison
+          </p>
+        )}
       </div>
     </div>
   );
