@@ -152,7 +152,7 @@ export default function CartPage() {
                 href="/checkout"
                 className="w-full bg-black text-white py-4 rounded-xl font-bold text-center block hover:bg-gray-800 transition-colors"
               >
-                Passer la commande
+                Valider le panier
               </Link>
             </div>
           </div>
