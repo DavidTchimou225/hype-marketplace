@@ -336,7 +336,7 @@ export default function CheckoutPage() {
       </div>
 
       {/* Bouton de validation */}
-      <div className="mt-6 mb-8">
+      <div className="mt-6 mb-20">
         <button
           type="button"
           onClick={handleSubmit}
