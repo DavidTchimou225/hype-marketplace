@@ -333,13 +333,15 @@ export default function CheckoutPage() {
           </div>
 
           <div className="mt-8">
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-black text-white py-4 px-4 rounded-lg font-medium hover:bg-gray-800 transition-colors disabled:bg-gray-400"
-            >
-              {loading ? 'Traitement...' : `Confirmer la commande • ${formatPrice(totalWithShipping)}`}
-            </button>
+            <div className="fixed bottom-0 left-0 w-full max-w-md mx-auto px-4 pb-4 z-50 bg-gradient-to-t from-white via-white/90 to-transparent md:static md:px-0 md:pb-0">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-black text-white py-4 px-4 rounded-lg font-medium hover:bg-gray-800 transition-colors disabled:bg-gray-400 shadow-xl"
+              >
+                {loading ? 'Traitement...' : `Confirmer la commande • ${formatPrice(totalWithShipping)}`}
+              </button>
+            </div>
           </div>
         </form>
       </div>
